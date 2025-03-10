@@ -1,11 +1,11 @@
-import { client } from '../../mongo';
 import type { Actions } from '@sveltejs/kit';
-import { buyableThings } from '$lib/buyableThings';
+import { type BuyableThingName, getBuyableThing } from '$lib/buyableThings';
+import { addTransaction, undoTransaction } from '$lib/db';
 
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	fill: async ({ request, locals }) => {
 		const auth = await locals.auth();
-		if (!auth?.user?.name) {
+		if (!auth?.user?.name || !auth?.user?.email) {
 			return {
 				status: 401,
 				body: { message: 'Unauthorized' }
@@ -14,8 +14,8 @@ export const actions: Actions = {
 
 		const formData = await request.formData();
 		const amount = Number(formData.get('amount'));
-		const thingName = formData.get('thing');
-		const thing = buyableThings.find((thing) => thing.name === thingName)!;
+		const thingName = String(formData.get('thing')) as BuyableThingName;
+		const thing = getBuyableThing(thingName);
 
 		if (amount > 50) {
 			return {
@@ -24,17 +24,33 @@ export const actions: Actions = {
 			};
 		}
 
-		await client.db('bull-db').collection('transactions').insertOne({
+		const insertedId = await addTransaction({
 			thing: thingName,
 			amount: -amount,
 			user: auth.user.name,
-			email: auth.user.email,
-			phone: auth.user.phone
+			email: auth.user.email
 		});
 
 		return {
 			status: 200,
-			body: { message: `${amount} ${thing.displayName} fylt på i kjøleskapet:)` }
+			body: {
+				message: `${amount} ${thing.displayName} fylt på i kjøleskapet:)`,
+				id: insertedId
+			}
 		};
+	},
+	undo: async ({ request, locals }) => {
+		const auth = await locals.auth();
+		if (!auth?.user?.name || !auth?.user?.email) {
+			return {
+				status: 401,
+				body: { message: 'Unauthorized' }
+			};
+		}
+
+		const formData = await request.formData();
+		const id = String(formData.get('id'));
+
+		return undoTransaction(id, auth.user.name);
 	}
 };

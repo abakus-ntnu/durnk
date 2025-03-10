@@ -20,4 +20,9 @@ export const buyableThings = [
 		image: redbullImage,
 		price: 23
 	}
-];
+] as const;
+
+export type BuyableThingName = (typeof buyableThings)[number]['name'];
+
+export const getBuyableThing = (name: BuyableThingName) =>
+	buyableThings.find((thing) => thing.name === name)!;
