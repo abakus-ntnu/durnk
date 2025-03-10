@@ -10,7 +10,10 @@ interface Transaction {
 }
 
 export const addTransaction = async (transaction: Transaction) => {
-	const result = await client.db('bull-db').collection('transactions').insertOne(transaction);
+	const result = await client
+		.db('bull-db')
+		.collection('transactions')
+		.insertOne({ ...transaction, timestamp: new Date() });
 	return String(result.insertedId);
 };
 
@@ -30,6 +33,12 @@ export const undoTransaction = async (id: string, username: string) => {
 		return {
 			status: 403,
 			body: { message: 'Du har ikke tilgang til denne transaksjonen' }
+		};
+	}
+	if (result.timestamp < new Date(Date.now() - 1000 * 60)) {
+		return {
+			status: 403,
+			body: { message: 'Du kan ikke angre transaksjoner som er eldre enn 1 minutt' }
 		};
 	}
 
