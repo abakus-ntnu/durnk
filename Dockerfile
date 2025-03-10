@@ -18,4 +18,5 @@ COPY --from=builder /app/node_modules node_modules/
 COPY package.json .
 EXPOSE 3000
 ENV NODE_ENV=production
+ENV AUTH_TRUST_HOST=true
 CMD [ "node", "build" ]
