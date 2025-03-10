@@ -1,4 +1,4 @@
-import { client } from '../mongo';
+import { client } from '../../mongo';
 import type { Actions } from '@sveltejs/kit';
 import { buyableThings } from '$lib/buyableThings';
 
@@ -13,11 +13,20 @@ export const actions: Actions = {
 		}
 
 		const formData = await request.formData();
+		const amount = Number(formData.get('amount'));
 		const thingName = formData.get('thing');
 		const thing = buyableThings.find((thing) => thing.name === thingName)!;
+
+		if (amount > 50) {
+			return {
+				status: 400,
+				body: { message: 'Liksom...' }
+			};
+		}
+
 		await client.db('bull-db').collection('transactions').insertOne({
 			thing: thingName,
-			amount: 1,
+			amount: -amount,
 			user: auth.user.name,
 			email: auth.user.email,
 			phone: auth.user.phone
@@ -25,7 +34,7 @@ export const actions: Actions = {
 
 		return {
 			status: 200,
-			body: { message: `1 ${thing.displayName} tatt fra kjøleskapet:)` }
+			body: { message: `${amount} ${thing.displayName} fylt på i kjøleskapet:)` }
 		};
 	}
 };

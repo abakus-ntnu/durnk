@@ -17,16 +17,34 @@
       </h2>
     {/if}
     {#if page.data.session}
-      <h1>Velkommen {page.data.session?.user?.email}!</h1>
-      <SignOut>
-        <span slot="submitButton">Logg ut</span>
-      </SignOut>
+      <h1>Velkommen {page.data.session?.user?.name}!</h1>
+      <p>{page.data.session?.user?.email}</p>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <SignOut>
+                <span slot="submitButton"><p/>Logg ut<p/></span>
+              </SignOut>
+            </td>
+            <td>
+              <a href="/fill">
+                <button>
+                  <p/>
+                  Fyll på
+                  <p/>
+                </button>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <h2>Ta fra skapet:</h2>
       {#each buyableThings as thing}
         <form method="POST">
+          <input name="thing" value={thing.name} type="hidden"/>
           <button>
-            <input name="thing" value={thing.name} type="hidden"/>
             <img src={thing.image} alt={thing.displayName} height="200">
             <br/>
             {thing.displayName}
@@ -34,10 +52,11 @@
         </form>
         <br/>
       {/each}
-      <p>Fyller du på? Ta kontakt med Teknikk</p>
     {:else}
       <SignIn provider="authentik">
+        <p/>
         <span slot="submitButton">Logg inn med abakus.no</span>
+        <p/>
       </SignIn>
     {/if}
   </nav>
