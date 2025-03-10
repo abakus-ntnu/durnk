@@ -43,3 +43,20 @@ export const undoTransaction = async (id: string, username: string) => {
 		body: { message: 'Angring vellykket' }
 	};
 };
+
+export const getTransactions = async (username: string) => {
+	return client
+		.db('bull-db')
+		.collection<Transaction & { _id: string; timestamp: string }>('transactions')
+		.find({ user: username })
+		.sort({ timestamp: -1 })
+		.map(({ _id, user, email, thing, amount, timestamp }) => ({
+			id: String(_id),
+			user: String(user),
+			email: String(email),
+			thing: String(thing),
+			amount: Number(amount),
+			timestamp: String(timestamp)
+		}))
+		.toArray();
+};
