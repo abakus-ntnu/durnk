@@ -60,3 +60,20 @@ export const getTransactions = async (username: string) => {
 		}))
 		.toArray();
 };
+
+export const getStock = async () => {
+	return (
+		await client
+			.db('bull-db')
+			.collection<Transaction & { _id: String; timestamp: string }>('transactions')
+			.find({})
+			.toArray()
+	).reduce((total, entry) => {
+		if (!(entry.thing in total)) {
+			total[entry.thing] = 0;
+		}
+		// Because we decided to do it the other way
+		total[entry.thing] -= entry.amount;
+		return total;
+	}, {});
+};

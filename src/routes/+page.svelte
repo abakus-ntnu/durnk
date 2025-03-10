@@ -63,7 +63,7 @@
 			<button>
 				<img src={thing.image} alt={thing.displayName} height="200" />
 				<br />
-				{thing.displayName}
+				{thing.displayName}: {page.data.stock[thing.name] || 0}
 			</button>
 		</form>
 		<br />
