@@ -30,3 +30,8 @@ jobs:
           tags: registry.tonlovhaug.no/abakus/durnk:latest
           build-args: |
             "MONGO_URL=${{ secrets.MONGO_URL }}"
+      - 
+        name: curl
+        uses: enflo/curl-action@master
+        with:
+          curl: ${{ secrets.WEBHOOK }}
