@@ -1,5 +1,6 @@
 import redbullImage from '../assets/redbull.jpg';
 import batteryImage from '../assets/battery.jpg';
+import powerkingImage from '../assets/powerking.jpg';
 
 export const buyableThings = [
 	{
@@ -17,7 +18,7 @@ export const buyableThings = [
 	{
 		name: 'powerking',
 		displayName: 'Power King',
-		image: redbullImage,
+		image: powerkingImage,
 		price: 23
 	}
 ] as const;
