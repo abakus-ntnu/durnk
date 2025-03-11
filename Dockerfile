@@ -56,6 +56,8 @@ RUN pnpm run build
 # where the necessary files are copied from the build stage.
 FROM base as final
 
+RUN apk add --no-cache bash curl
+
 # Use production node environment by default.
 ENV NODE_ENV production
 
