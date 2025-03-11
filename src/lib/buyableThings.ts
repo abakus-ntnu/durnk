@@ -1,6 +1,7 @@
 import redbullImage from '../assets/redbull.jpg';
 import batteryImage from '../assets/battery.jpg';
 import powerkingImage from '../assets/powerking.jpg';
+import colaImage from '../assets/cola-zero.jpeg';
 
 export const buyableThings = [
 	{
@@ -16,10 +17,16 @@ export const buyableThings = [
 		price: 23
 	},
 	{
+		name: 'cola',
+		displayName: 'Coca Cola',
+		image: colaImage,
+		price: 10
+	},
+	{
 		name: 'powerking',
 		displayName: 'Power King',
 		image: powerkingImage,
-		price: 23
+		price: 10
 	}
 ] as const;
 
