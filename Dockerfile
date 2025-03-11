@@ -5,6 +5,8 @@ RUN corepack enable
 
 WORKDIR /app
 COPY package*.json .
+ARG MONGO_URL
+ENV MONGO_URL=$MONGO_URL
 RUN pnpm i
 COPY . .
 RUN pnpm run build
@@ -18,5 +20,4 @@ COPY --from=builder /app/node_modules node_modules/
 COPY package.json .
 EXPOSE 3000
 ENV NODE_ENV=production
-ENV AUTH_TRUST_HOST=true
 CMD [ "node", "build" ]
