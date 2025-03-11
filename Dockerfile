@@ -12,7 +12,8 @@ COPY . .
 RUN pnpm run build
 RUN pnpm prune --production
 
-FROM node:18-alpine
+FROM node:22-alpine
+RUN apk add --no-cache bash curl
 WORKDIR /app
 COPY --from=builder /app/.svelte-kit .svelte-kit/
 COPY --from=builder /app/build build/
