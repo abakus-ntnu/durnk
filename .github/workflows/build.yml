@@ -31,7 +31,13 @@ jobs:
           build-args: |
             "MONGO_URL=${{ secrets.MONGO_URL }}"
       - 
-        name: curl
+        name: Register new deployment
         uses: enflo/curl-action@master
         with:
-          curl: ${{ secrets.WEBHOOK }}
+          curl: |
+            -X POST \
+            https://admin.tonlovhaug.no/api/application.deploy \
+            -H 'accept: application/json' \
+            -H 'Content-Type: application/json' \
+            -H 'x-api-key: ${{ secrets.API_KEY }}' \
+            -d '{ "applicationId": "_zVM5lCnq80bplU3pa-xv" }'
