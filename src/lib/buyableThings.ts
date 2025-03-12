@@ -1,4 +1,5 @@
 import redbullImage from '../assets/redbull.jpg';
+import monsterImage from '../assets/monster.webp';
 import batteryImage from '../assets/battery.jpg';
 import powerkingImage from '../assets/powerking.jpg';
 import colaImage from '../assets/cola-zero.jpeg';
@@ -8,7 +9,13 @@ export const buyableThings = [
 		name: 'battery',
 		displayName: 'Battery',
 		image: batteryImage,
-		price: 15
+		price: 17
+	},
+	{
+		name: 'monster',
+		displayName: 'Monster',
+		image: monsterImage,
+		price: 18
 	},
 	{
 		name: 'redbull',
