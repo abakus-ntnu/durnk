@@ -1,5 +1,5 @@
 import redbullImage from '../assets/redbull.jpg';
-import monsterImage from '../assets/monster.webp';
+import monsterImage from '../assets/monster.jpg';
 import batteryImage from '../assets/battery.jpg';
 import powerkingImage from '../assets/powerking.jpg';
 import colaImage from '../assets/cola-zero.jpeg';
